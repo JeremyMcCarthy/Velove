@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private void formatageData(JsonObject o){
         stations = new ArrayList<>();
         listStations = o.get("features").getAsJsonArray();
-        //mTextView.setText(Integer.toString(len));
         for (int i=0; i<listStations.size();i++){
             stations.add(new Station());
             stations.get(i).setID(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("number").getAsInt());
@@ -91,9 +90,6 @@ public class MainActivity extends AppCompatActivity {
             stations.get(i).setLastUpdateFme(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("last_update_fme").getAsString());
             stations.get(i).setCodeInsee(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("code_insee").getAsInt());
         }
-                /*for (int i=0; i<propStations.size();i++){
-                    stations.add(propStations.get(i));
-                }*/
 
         mTextView.setText(stations.get(0).getName());
     }
