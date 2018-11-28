@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextView;
     private JsonArray listStations;
-    private JsonObject r;
-    private Station firstStation;
-    private ArrayList<JsonObject> propStations;
     private ArrayList<Station> stations;
 
     @Override
@@ -56,24 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
                 JsonObject o = response.body();
-                firstStation = new Station();
-                propStations = new ArrayList<JsonObject>();
-                listStations = o.get("features").getAsJsonArray();
-                int len = listStations.size();
-                //mTextView.setText(Integer.toString(len));
-                r = listStations.get(0).getAsJsonObject();
-                JsonObject prop = r.get("properties").getAsJsonObject();
-                int id = prop.get("number").getAsInt();
-                //mTextView.setText(Integer.toString(id));
-                firstStation.setID(id);
-                for (int i=0; i<listStations.size();i++){
-                    propStations.add(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject());
-                }
-                for (int i=0; i<propStations.size();i++){
-                    stations.add();
-                }
-
-                mTextView.setText(propStations.toString());
+                formatageData(o);
             }
 
             @Override
@@ -81,5 +61,40 @@ public class MainActivity extends AppCompatActivity {
                 mTextView.setText("et non !");
             }
         });
+    }
+
+    private void formatageData(JsonObject o){
+        stations = new ArrayList<>();
+        listStations = o.get("features").getAsJsonArray();
+        //mTextView.setText(Integer.toString(len));
+        for (int i=0; i<listStations.size();i++){
+            stations.add(new Station());
+            stations.get(i).setID(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("number").getAsInt());
+            stations.get(i).setName(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("name").getAsString());
+            stations.get(i).setAdress(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("address").getAsString());
+            stations.get(i).setAdress2(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("address2").getAsString());
+            stations.get(i).setCommune(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("commune").getAsString());
+            stations.get(i).setNumArrondissement(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("nmarrond").getAsInt());
+            stations.get(i).setBonus(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("bonus").getAsString());
+            stations.get(i).setPole(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("pole").getAsString());
+            stations.get(i).setLatitude(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("lat").getAsFloat());
+            stations.get(i).setLongitude(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("lng").getAsFloat());
+            stations.get(i).setBikeStands(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("bike_stands").getAsInt());
+            stations.get(i).setStatus(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("status").getAsString());
+            stations.get(i).setAvailableBikeStands(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("available_bike_stands").getAsInt());
+            stations.get(i).setAvailableBikes(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("available_bikes").getAsInt());
+            stations.get(i).setAvailabilityCode(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("availabilitycode").getAsInt());
+            stations.get(i).setAvailability(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("availability").getAsString());
+            stations.get(i).setBanking(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("banking").getAsInt());
+            stations.get(i).setGid(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("gid").getAsInt());
+            stations.get(i).setLastUpdate(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("last_update").getAsString());
+            stations.get(i).setLastUpdateFme(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("last_update_fme").getAsString());
+            stations.get(i).setCodeInsee(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("code_insee").getAsInt());
+        }
+                /*for (int i=0; i<propStations.size();i++){
+                    stations.add(propStations.get(i));
+                }*/
+
+        mTextView.setText(stations.get(0).getName());
     }
 }
