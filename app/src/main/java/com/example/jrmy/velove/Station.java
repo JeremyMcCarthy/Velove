@@ -4,6 +4,15 @@ import java.util.Date;
 
 public class Station {
     private int ID;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     private String name;
     private String adress;
     private String adress2;

@@ -26,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextView;
     private JsonArray listStations;
-    private int nbStations;
     private JsonObject r;
-    private ArrayList<JsonObject> stations;
+    private Station firstStation;
+    private ArrayList<JsonObject> propStations;
+    private ArrayList<Station> stations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +56,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
                 JsonObject o = response.body();
+                firstStation = new Station();
+                propStations = new ArrayList<JsonObject>();
                 listStations = o.get("features").getAsJsonArray();
-                nbStations = listStations.size();
-                mTextView.setText(listStations.toString());
+                int len = listStations.size();
+                //mTextView.setText(Integer.toString(len));
+                r = listStations.get(0).getAsJsonObject();
+                JsonObject prop = r.get("properties").getAsJsonObject();
+                int id = prop.get("number").getAsInt();
+                //mTextView.setText(Integer.toString(id));
+                firstStation.setID(id);
+                for (int i=0; i<listStations.size();i++){
+                    propStations.add(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject());
+                }
+                for (int i=0; i<propStations.size();i++){
+                    stations.add();
+                }
+
+                mTextView.setText(propStations.toString());
             }
 
             @Override
@@ -65,10 +81,5 @@ public class MainActivity extends AppCompatActivity {
                 mTextView.setText("et non !");
             }
         });
-        /*for (int i=0; i<nbStations;i++){
-            r = listStations.get(i).getAsJsonObject();
-            stations.set(i,r);
-        }
-        mTextView.setText(r.toString());*/
     }
 }
