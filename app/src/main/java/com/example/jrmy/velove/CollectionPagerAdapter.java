@@ -18,18 +18,27 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        if (i==0){
-            stationFragment = new BikeListFragment();
-            return stationFragment;
+        Fragment fragment;
+        Bundle args;
+        switch(i) {
+            case 1 :
+                fragment = new MapsFragment();
+                args = new Bundle();
+                args.putInt(MapsFragment.ARG_OBJECT, i + 1);
+                fragment.setArguments(args);
+                break ;
+            case 0 :
+                stationFragment = new BikeListFragment();
+                fragment = stationFragment;
+                break ;
+            default :
+                fragment = new PagerFragment();
+                args = new Bundle();
+                args.putInt(PagerFragment.ARG_OBJECT, i + 1);
+                fragment.setArguments(args);
+                break;
         }
-        else{
-            Fragment fragment = new PagerFragment();
-            Bundle args = new Bundle();
-            // Our object is just an integer :-P
-            args.putInt(PagerFragment.ARG_OBJECT, i + 1);
-            fragment.setArguments(args);
-            return fragment;
-        }
+        return fragment;
     }
 
     @Override
@@ -39,6 +48,18 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "OBJECT " + (position + 1);
+        CharSequence title;
+        switch(position) {
+            case 1 :
+                title = "Carte";
+                break;
+            case 0 :
+                title = "Liste";
+                break;
+            default :
+                title = "Unkonwn";
+                break;
+        }
+        return title;
     }
 }
