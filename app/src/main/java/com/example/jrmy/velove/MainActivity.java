@@ -1,22 +1,13 @@
 package com.example.jrmy.velove;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.TextView;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import org.json.*;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -24,40 +15,24 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.widget.TableLayout;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity {
 
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
-    private GoogleMap mMap;
     private InterfaceRequete service;
 
-    private TextView mTextView;
+    private BikeListFragment stationFragment;
+
+
     private JsonArray listStations;
-    private ArrayList<Station> stations;
+    private ArrayList<Station> stations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //mTextView = findViewById(R.id.textView);
-
-        mCollectionPagerAdapter = new CollectionPagerAdapter(getSupportFragmentManager());
-        mViewPager = findViewById(R.id.pager);
-        mViewPager.setAdapter(mCollectionPagerAdapter);
-
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(mViewPager);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -66,6 +41,28 @@ public class MainActivity extends AppCompatActivity {
         service = retrofit.create(InterfaceRequete.class);
 
         getStationsFromServer();
+
+        mCollectionPagerAdapter =
+                new CollectionPagerAdapter(
+                        getSupportFragmentManager());
+
+        //mTextView.setText(stations.get(0).toString());
+        mViewPager = findViewById(R.id.pager);
+        mViewPager.setAdapter(mCollectionPagerAdapter);
+
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(mViewPager);
+        // ViewPager and its adapters use support library
+        // fragments, so use getSupportFragmentManager.
+        /*mCollectionPagerAdapter =
+                new CollectionPagerAdapter(
+                        getSupportFragmentManager());
+        mViewPager = findViewById(R.id.pager);
+        mViewPager.setAdapter(mCollectionPagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(mViewPager);*/
 
     }
 
@@ -76,20 +73,21 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
                 JsonObject o = response.body();
                 formatageData(o);
+                stationFragment = mCollectionPagerAdapter.getStationFragment();
+                stationFragment.dataReception(stations);
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                mTextView.setText("et non !");
+
             }
         });
     }
 
     private void formatageData(JsonObject o){
-        stations = new ArrayList<>();
         listStations = o.get("features").getAsJsonArray();
         for (int i=0; i<listStations.size();i++){
-            stations.add(new Station());
+            stations.add(new Station(""));
             stations.get(i).setID(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("number").getAsInt());
             stations.get(i).setName(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("name").getAsString());
             stations.get(i).setAdress(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("address").getAsString());
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             stations.get(i).setLastUpdateFme(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("last_update_fme").getAsString());
             stations.get(i).setCodeInsee(listStations.get(i).getAsJsonObject().get("properties").getAsJsonObject().get("code_insee").getAsInt());
         }
-
-        mTextView.setText(stations.get(0).getName());
     }
+
+
 }
