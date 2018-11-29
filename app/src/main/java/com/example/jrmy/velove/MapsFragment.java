@@ -30,9 +30,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         // properly.
         View rootView = inflater.inflate(
                 R.layout.fragment_maps, container, false);
-        Bundle args = getArguments();
-        ((TextView) rootView.findViewById(R.id.text1)).setText(
-                Integer.toString(args.getInt(ARG_OBJECT)));
         mapView=rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
