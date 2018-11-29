@@ -59,17 +59,16 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
 
-        /*Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://download.data.grandlyon.com/")
                 .build();
         service = retrofit.create(InterfaceRequete.class);
 
-        getStationsFromServer();*/
+        getStationsFromServer();
 
     }
 
-    /*
     private void getStationsFromServer(){
         Call<JsonObject> myJson = service.getstations();
         myJson.enqueue(new Callback<JsonObject>() {
@@ -115,5 +114,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mTextView.setText(stations.get(0).getName());
-    }*/
+    }
 }

@@ -13,29 +13,49 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int i) {
         Fragment fragment;
-        if(i==2) {
-            fragment = new MapsFragment();
-            Bundle args = new Bundle();
-            args.putInt(MapsFragment.ARG_OBJECT, i + 1);
-            fragment.setArguments(args);
-        }
-        else {
-            fragment = new PagerFragment();
-            Bundle args = new Bundle();
-            // Our object is just an integer :-P
-            args.putInt(PagerFragment.ARG_OBJECT, i + 1);
-            fragment.setArguments(args);
+        Bundle args;
+        switch(i) {
+            case 1 :
+                fragment = new MapsFragment();
+                args = new Bundle();
+                args.putInt(MapsFragment.ARG_OBJECT, i + 1);
+                fragment.setArguments(args);
+                break ;
+            case 0 :
+                fragment = new PagerFragment();
+                args = new Bundle();
+                args.putInt(PagerFragment.ARG_OBJECT, i + 1);
+                fragment.setArguments(args);
+                break ;
+            default :
+                fragment = new PagerFragment();
+                args = new Bundle();
+                args.putInt(PagerFragment.ARG_OBJECT, i + 1);
+                fragment.setArguments(args);
+                break;
         }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 5;
+        return 2;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "OBJECT " + (position + 1);
+        CharSequence title;
+        switch(position) {
+            case 1 :
+                title = "Carte";
+                break;
+            case 0 :
+                title = "Liste";
+                break;
+            default :
+                title = "Unkonwn";
+                break;
+        }
+        return title;
     }
 }
