@@ -33,11 +33,12 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
                 break ;
             default :
                 fragment = new PagerFragment();
-        args = new Bundle();
-        args.putInt(PagerFragment.ARG_OBJECT, i + 1);
-        fragment.setArguments(args);break;
+                args = new Bundle();
+                args.putInt(PagerFragment.ARG_OBJECT, i + 1);
+                fragment.setArguments(args);
+                break;
         }
-        return fragment;}
+        return fragment;
     }
 
     @Override
