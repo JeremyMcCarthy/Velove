@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class BikeListFragment extends Fragment {
 
     private ArrayList<Station> stations = new ArrayList<>();
     private StationAdapter stationAdapter;
+    private RecyclerView rcvStation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class BikeListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_bike_list, container, false);
-        RecyclerView rcvStation = rootView.findViewById(R.id.rcvStations);
+        rcvStation = rootView.findViewById(R.id.rcvStations);
         rcvStation.setHasFixedSize(true);
 
         // use a linear layout manager
@@ -37,6 +39,10 @@ public class BikeListFragment extends Fragment {
 
         stationAdapter = new StationAdapter(stations);
         rcvStation.setAdapter(stationAdapter);
+
+        // 2 - Calling the method that configuring click on RecyclerView
+        this.configureOnClickRecyclerView();
+
 
 
         return rootView;
@@ -47,4 +53,17 @@ public class BikeListFragment extends Fragment {
         stationAdapter.notifyDataSetChanged();
     }
 
+    // 1 - Configure item click on RecyclerView
+    private void configureOnClickRecyclerView(){
+        ItemClickSupport.addTo(rcvStation, R.layout.fragment_bike_list)
+                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        // 1 - Get user from adapter
+                        Station s = stationAdapter.getStation(position);
+                        // 2 - Show result in a Toast
+                        Toast.makeText(getContext(), "You clicked on user : "+s.getName(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }

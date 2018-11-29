@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-public class StationViewHolder extends RecyclerView.ViewHolder{
+public class StationViewHolder extends RecyclerView.ViewHolder {
     public TextView txvName;
 
     public StationViewHolder(View rootView) {

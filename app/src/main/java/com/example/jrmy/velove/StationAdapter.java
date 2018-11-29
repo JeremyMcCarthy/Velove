@@ -41,4 +41,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationViewHolder> {
     public int getItemCount() {
         return this.stations.size();
     }
+
+    public Station getStation(int position){
+        return this.stations.get(position);
+    }
 }
