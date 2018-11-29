@@ -10,19 +10,31 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
+    private BikeListFragment stationFragment;
+
+    public BikeListFragment getStationFragment() {
+        return stationFragment;
+    }
+
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new PagerFragment();
-        Bundle args = new Bundle();
-        // Our object is just an integer :-P
-        args.putInt(PagerFragment.ARG_OBJECT, i + 1);
-        fragment.setArguments(args);
-        return fragment;
+        if (i==0){
+            stationFragment = new BikeListFragment();
+            return stationFragment;
+        }
+        else{
+            Fragment fragment = new PagerFragment();
+            Bundle args = new Bundle();
+            // Our object is just an integer :-P
+            args.putInt(PagerFragment.ARG_OBJECT, i + 1);
+            fragment.setArguments(args);
+            return fragment;
+        }
     }
 
     @Override
     public int getCount() {
-        return 10;
+        return 3;
     }
 
     @Override

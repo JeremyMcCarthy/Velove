@@ -1,9 +1,14 @@
 package com.example.jrmy.velove;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class Station {
+public class Station implements Serializable {
     private int ID;
+
+    public Station(String name) {
+        this.name = name;
+    }
+
     private String name;
     private String adress;
     private String adress2;
