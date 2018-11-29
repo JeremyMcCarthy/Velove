@@ -1,5 +1,6 @@
 package com.example.jrmy.velove;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 public class BikeListFragment extends Fragment {
 
+    private MainActivity activity;
     private ArrayList<Station> stations = new ArrayList<>();
     private StationAdapter stationAdapter;
     private RecyclerView rcvStation;
@@ -63,7 +65,29 @@ public class BikeListFragment extends Fragment {
                         Station s = stationAdapter.getStation(position);
                         // 2 - Show result in a Toast
                         Toast.makeText(getContext(), "You clicked on user : "+s.getName(), Toast.LENGTH_SHORT).show();
+                        activity.callDetailsActivity();
                     }
                 });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MapsFragment.MainActivityMapsCallBack) {
+            activity = (MainActivity) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        activity = null;
+    }
+
+    public interface MainActivityBikeListCallBack {
+        void callDetailsActivity();
     }
 }

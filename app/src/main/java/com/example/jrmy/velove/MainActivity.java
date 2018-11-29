@@ -1,5 +1,6 @@
 package com.example.jrmy.velove;
 
+import android.content.Intent;
 import android.icu.util.LocaleData;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -20,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 
-public class MainActivity extends AppCompatActivity implements MapsFragment.MainActivityMapsCallBack {
+public class MainActivity extends AppCompatActivity implements MapsFragment.MainActivityMapsCallBack, BikeListFragment.MainActivityBikeListCallBack {
 
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
@@ -127,5 +128,11 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         }
         Log.d("DATA","fin remp positions");
         mapsFragment.dataReception(positions);
+    }
+
+    @Override
+    public void callDetailsActivity() {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        startActivity(intent);
     }
 }

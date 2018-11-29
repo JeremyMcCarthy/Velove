@@ -73,8 +73,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                startActivity(intent);
+                activity.callDetailsActivity();
             }
         });
         mapView.onResume();
@@ -99,5 +98,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     public interface MainActivityMapsCallBack {
         void callDataReception();
+        void callDetailsActivity();
     }
 }
