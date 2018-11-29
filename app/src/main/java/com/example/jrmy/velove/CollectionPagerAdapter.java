@@ -3,17 +3,22 @@ package com.example.jrmy.velove;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
+public class CollectionPagerAdapter extends FragmentPagerAdapter {
     public CollectionPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
     private BikeListFragment stationFragment;
+    private MapsFragment mapsFragment;
 
     public BikeListFragment getStationFragment() {
         return stationFragment;
+    }
+    public MapsFragment getMapsFragment() {
+        return mapsFragment;
     }
 
     @Override
@@ -22,10 +27,8 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         Bundle args;
         switch(i) {
             case 1 :
-                fragment = new MapsFragment();
-                args = new Bundle();
-                args.putInt(MapsFragment.ARG_OBJECT, i + 1);
-                fragment.setArguments(args);
+                mapsFragment = new MapsFragment();
+                fragment = mapsFragment;
                 break ;
             case 0 :
                 stationFragment = new BikeListFragment();

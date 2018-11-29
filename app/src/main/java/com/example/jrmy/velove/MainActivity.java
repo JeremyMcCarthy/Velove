@@ -1,10 +1,13 @@
 package com.example.jrmy.velove;
 
+import android.icu.util.LocaleData;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -17,17 +20,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MapsFragment.MainActivityMapsCallBack {
 
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
     private InterfaceRequete service;
 
     private BikeListFragment stationFragment;
+    private MapsFragment mapsFragment;
 
 
     private JsonArray listStations;
     private ArrayList<Station> stations = new ArrayList<>();
+    private ArrayList<Position> positions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,5 +117,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void callDataReception() {
+        mapsFragment = mCollectionPagerAdapter.getMapsFragment();
+        Log.d("DATA","deb remp positions");
+        for(Station s : stations) {
+            Log.d("DATA",s.getName());
+            positions.add(new Position(new LatLng(s.getLatitude(),s.getLongitude()),s.getName()));
+        }
+        Log.d("DATA","fin remp positions");
+        mapsFragment.dataReception(positions);
+    }
 }
