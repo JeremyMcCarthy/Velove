@@ -1,6 +1,7 @@
 package com.example.jrmy.velove;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,18 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public static final String ARG_OBJECT = "object";
-
-    MapView mapView;
-    GoogleMap gMap;
+    private MainActivity activity;
+    private MapView mapView;
+    private GoogleMap gMap;
+    private LatLngBounds lyon;
+    private ArrayList<Position> positions=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -37,16 +45,59 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         return rootView;
     }
 
+    public void dataReception(ArrayList<Position> p){
+        positions.addAll(p);
+        for(Position pp : positions) {
+            gMap.addMarker(new MarkerOptions().position(pp.getLatLng()).title(pp.getName()));
+        }
+        //gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lyon,12));
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("MAP","nono");
+        Log.d("DATA","map recue");
         gMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        gMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        gMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        activity.callDataReception();
+        lyon = new LatLngBounds(
+                new LatLng(45.714131, 4.784641), new LatLng(45.800052, 4.910138));
+        gMap.setLatLngBoundsForCameraTarget(lyon);
+        gMap.setMinZoomPreference(11);
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lyon.getCenter(), 12));
+        gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                gMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+                return false;
+            }
+        });
+        gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                startActivity(intent);
+            }
+        });
         mapView.onResume();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivityMapsCallBack) {
+            activity = (MainActivity) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        activity = null;
+    }
+
+    public interface MainActivityMapsCallBack {
+        void callDataReception();
     }
 }
