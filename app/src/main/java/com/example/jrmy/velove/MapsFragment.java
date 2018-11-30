@@ -1,7 +1,6 @@
 package com.example.jrmy.velove;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,7 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
-    public static final String ARG_OBJECT = "object";
     private MainActivity activity;
     private MapView mapView;
     private GoogleMap gMap;
@@ -50,7 +48,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         for(Position pp : positions) {
             gMap.addMarker(new MarkerOptions().position(pp.getLatLng()).title(pp.getName()));
         }
-        //gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lyon,12));
     }
 
     @Override
