@@ -3,9 +3,8 @@ package com.example.jrmy.velove;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-// class obtained from the website : https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
-
-// Manage the click on an item in the RecyclerView
+// Cette classe est tirée du site : https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+// Permet de gérer le clic sur un des élements du RecyclerView
 public class ItemClickSupport {
     private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;

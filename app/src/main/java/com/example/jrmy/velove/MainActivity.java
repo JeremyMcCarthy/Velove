@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,14 +40,14 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create the Retrofit service
+        // Création du service retrofit qui nous servira à faire nos requetes
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://download.data.grandlyon.com/")
                 .build();
         service = retrofit.create(InterfaceRequete.class);
 
-        // fill the list of stations with the stations obtained with a request on the server
+        // Remplie la liste des stations avec les données du Json résultant de la requete
         getStationsFromServer();
 
         //Adapter pour la gestion des onglets et la gestion des swipes entre les différents fragments
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    // Create the view of the ActionBar
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -71,31 +70,29 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         return super.onCreateOptionsMenu(menu);
     }
 
-    // Perform action for each button pressed in the ActionBar
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
+                // Pour le cas des paramètres, il n'est pas encore traité
                 return true;
             case R.id.action_refresh:
-                // User chose the "refresh" action
-
-                // fill the list of stations with the stations obtained with a request on the server (refresh the data)
+                // Si l'utilisateur choisi de clicker sur le bouton refresh
+                // On appelle la fonction qui va reremplir la liste des stations mais avec des paramètres actualisés
                 getStationsFromServer();
                 return true;
 
-            default: // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
+            default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
 
-    // fill the list of stations with the stations obtained with a request on the server
+    // On remplie la liste des stations avec les données obtenue par requete
+    // Attention : cette fonction est asynchrone du fait de l'appel de la requete
     private void getStationsFromServer(){
         Call<JsonObject> myJson = service.getstations();
-        // Send the request to the server
         myJson.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
@@ -112,8 +109,10 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         });
     }
 
-    // Fill the stations with their properties and fill the list of stations with the stations
+    // On remplie les propriétés des Station de la liste
     private void formatageData(JsonObject o){
+        // on vide la liste au début pour éviter de créer des stations "supplémentaires" si il y a actualisation
+        stations.removeAll(stations);
         listStations = o.get("features").getAsJsonArray();
         for (int i=0; i<listStations.size();i++){
             stations.add(new Station(""));

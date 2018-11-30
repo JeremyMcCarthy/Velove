@@ -1,13 +1,11 @@
 package com.example.jrmy.velove;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 //Gestionnaire des fragments dans les différents onglets
-//FragmentPagerAdapter permet de mettre en mémoire les fragments dès le lancement de l'application, fonctinonement plus fluide
+//FragmentPagerAdapter permet de mettre en mémoire les fragments dès le lancement de l'application, fonctionement plus fluide
 //FragmentStatePagerAdapter aurait permis de les lancer uniquement lorsqu'ils sont affichés cependant nous n'en n'avons que 3 donc pas nécessaire
 public class CollectionPagerAdapter extends FragmentPagerAdapter {
     public CollectionPagerAdapter(FragmentManager fm) {

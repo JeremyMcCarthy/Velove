@@ -27,20 +27,20 @@ public class StationListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_bike_list, container, false);
 
         rcvStation = rootView.findViewById(R.id.rcvStations);
         rcvStation.setHasFixedSize(true);
 
-        // use a linear layout manager
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rcvStation.setLayoutManager(layoutManager);
 
         stationAdapter = new StationAdapter(this.getContext(),stations);
         rcvStation.setAdapter(stationAdapter);
 
-        // Configure the click on Recyclerview
+        // Configuration du clic sur le RecyclerView
         this.configureOnClickRecyclerView();
 
         return rootView;
@@ -52,14 +52,15 @@ public class StationListFragment extends Fragment {
         stationAdapter.notifyDataSetChanged();
     }
 
-    // Configure item click on RecyclerView
+    // On configure le clic sur le RecyclerView
+    // Si il y a un clic, cela nous renvoie les détails de la station correspondante
     private void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(rcvStation, R.layout.fragment_bike_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    // Get Station from adapter
+                    // On récupère la station à partir de l'adapter
                     Station s = stationAdapter.getStation(position);
 
-                    // Launch the new activity with the details of the selected Station
+                    // On lance l'activité contenant les détails de la station "cliquée"
                     activity.callDetailsActivity(s.getName());
                 });
     }
