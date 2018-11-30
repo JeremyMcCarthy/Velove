@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+// Display all the details of a station in a new activity
 public class DetailsActivity extends AppCompatActivity {
 
     @Override

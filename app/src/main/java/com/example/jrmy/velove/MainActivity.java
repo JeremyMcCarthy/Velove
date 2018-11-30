@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
@@ -24,13 +23,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 
-public class MainActivity extends AppCompatActivity implements MapsFragment.MainActivityMapsCallBack, BikeListFragment.MainActivityBikeListCallBack {
+public class MainActivity extends AppCompatActivity implements MapsFragment.MainActivityMapsCallBack, StationListFragment.MainActivityBikeListCallBack {
 
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
     private InterfaceRequete service;
 
-    private BikeListFragment stationFragment;
+    private StationListFragment stationFragment;
     private MapsFragment mapsFragment;
 
     private JsonArray listStations;
@@ -41,32 +40,32 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create the Retrofit service
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://download.data.grandlyon.com/")
                 .build();
         service = retrofit.create(InterfaceRequete.class);
 
+        // fill the list of stations with the stations obtained with a request on the server
         getStationsFromServer();
+
         // ViewPager and its adapters use support library
         // fragments, so use getSupportFragmentManager.
-
         mCollectionPagerAdapter =
                 new CollectionPagerAdapter(
                         getSupportFragmentManager());
 
-        //mTextView.setText(stations.get(0).toString());
         mViewPager = findViewById(R.id.pager);
         mViewPager.setAdapter(mCollectionPagerAdapter);
 
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
-
-
-
     }
 
+    // Create the view of the ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Perform action for each button pressed in the ActionBar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
                 return true;
             case R.id.action_refresh:
                 // User chose the "refresh" action
-                Toast.makeText(this, "toto", Toast.LENGTH_SHORT).show();
+
+                // fill the list of stations with the stations obtained with a request on the server (refresh the data)
                 getStationsFromServer();
                 return true;
 
@@ -93,9 +94,10 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
     }
 
 
-
+    // fill the list of stations with the stations obtained with a request on the server
     private void getStationsFromServer(){
         Call<JsonObject> myJson = service.getstations();
+        // Send the request to the server
         myJson.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         });
     }
 
+    // Fill the stations with their properties and fill the list of stations with the stations
     private void formatageData(JsonObject o){
         listStations = o.get("features").getAsJsonArray();
         for (int i=0; i<listStations.size();i++){
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         }
     }
 
+
     @Override
     public void callDataReception() {
         mapsFragment = mCollectionPagerAdapter.getMapsFragment();
@@ -152,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         mapsFragment.dataReception(positions);
     }
 
+    // Create the new Activity which contains the details of a Station
     @Override
     public void callDetailsActivity(String name) {
         Intent intent = new Intent(this, DetailsActivity.class);
