@@ -2,8 +2,8 @@ package com.example.jrmy.velove;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -24,11 +23,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private MainActivity activity;
     private MapView mapView;
     private GoogleMap gMap;
-    private LatLngBounds lyon;
     private ArrayList<Position> positions=new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(
                 R.layout.fragment_maps, container, false);
@@ -60,7 +58,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         activity.callDataReception();
 
         //Permet de fixer des limites à la caméra de la carte dans la zone géographique de Lyon
-        lyon = new LatLngBounds(
+        LatLngBounds lyon = new LatLngBounds(
                 new LatLng(45.714131, 4.784641), new LatLng(45.800052, 4.910138));
         gMap.setLatLngBoundsForCameraTarget(lyon);
 
@@ -104,7 +102,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     //sécurisation des données lorsque le fragment est détruit
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         savedInstanceState.putParcelableArrayList("positions",positions);
         super.onSaveInstanceState(savedInstanceState);
     }

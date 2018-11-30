@@ -29,7 +29,6 @@ public class CollectionPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         Fragment fragment;
-        Bundle args;
         switch(i) {
             case 1 :
                 mapsFragment = new MapsFragment();
@@ -40,7 +39,7 @@ public class CollectionPagerAdapter extends FragmentPagerAdapter {
                 fragment = stationFragment;
                 break ;
             default :
-                fragment = new PagerFragment();
+                fragment = new GeneralInformationFragment();
                 break;
         }
         return fragment;
