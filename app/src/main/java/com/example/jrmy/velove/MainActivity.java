@@ -1,13 +1,15 @@
 package com.example.jrmy.velove;
 
-import android.app.Application;
 import android.content.Intent;
-import android.icu.util.LocaleData;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
     private BikeListFragment stationFragment;
     private MapsFragment mapsFragment;
 
-
     private JsonArray listStations;
     private ArrayList<Station> stations = new ArrayList<>();
     private ArrayList<Position> positions = new ArrayList<>();
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://download.data.grandlyon.com/")
@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         service = retrofit.create(InterfaceRequete.class);
 
         getStationsFromServer();
+        // ViewPager and its adapters use support library
+        // fragments, so use getSupportFragmentManager.
 
         mCollectionPagerAdapter =
                 new CollectionPagerAdapter(
@@ -60,18 +62,37 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
-        // ViewPager and its adapters use support library
-        // fragments, so use getSupportFragmentManager.
-        /*mCollectionPagerAdapter =
-                new CollectionPagerAdapter(
-                        getSupportFragmentManager());
-        mViewPager = findViewById(R.id.pager);
-        mViewPager.setAdapter(mCollectionPagerAdapter);
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(mViewPager);*/
+
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+            case R.id.action_refresh:
+                // User chose the "refresh" action
+                Toast.makeText(this, "toto", Toast.LENGTH_SHORT).show();
+                getStationsFromServer();
+                return true;
+
+            default: // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 
     private void getStationsFromServer(){
         Call<JsonObject> myJson = service.getstations();

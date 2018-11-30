@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <!-- "Mark Favorite", should appear as action button if possible -->
+
+    <!-- "Mark Refresh", should appear as action button if possible -->
+    <group app:showAsAction="always" />
     <item
-        android:id="@+id/action_favorite"
-        android:icon="@drawable/ic_favorite_black_24dp"
-        android:title="@string/action_favorite"
+        android:id="@+id/action_refresh"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:title="@string/action_refresh"
         app:showAsAction="ifRoom" />
 
     <!-- Settings, should always be in the overflow -->
