@@ -37,7 +37,7 @@ public class BikeListFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rcvStation.setLayoutManager(layoutManager);
 
-        stationAdapter = new StationAdapter(stations);
+        stationAdapter = new StationAdapter(this.getContext(),stations);
         rcvStation.setAdapter(stationAdapter);
 
         // 2 - Calling the method that configuring click on RecyclerView
@@ -59,7 +59,7 @@ public class BikeListFragment extends Fragment {
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        // 1 - Get user from adapter
+                        // 1 - Get Station from adapter
                         Station s = stationAdapter.getStation(position);
                         // 2 - Show result in a Toast
                         Toast.makeText(getContext(), "You clicked on user : "+s.getName(), Toast.LENGTH_SHORT).show();
