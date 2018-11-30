@@ -66,14 +66,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                gMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),15));
                 return false;
             }
         });
         gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                activity.callDetailsActivity();
+                activity.callDetailsActivity(marker.getTitle());
             }
         });
         mapView.onResume();
@@ -98,6 +98,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     public interface MainActivityMapsCallBack {
         void callDataReception();
-        void callDetailsActivity();
+        void callDetailsActivity(String name);
     }
 }

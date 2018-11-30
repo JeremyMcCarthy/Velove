@@ -131,8 +131,13 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
     }
 
     @Override
-    public void callDetailsActivity() {
+    public void callDetailsActivity(String name) {
         Intent intent = new Intent(this, DetailsActivity.class);
+        for(Station s : stations) {
+            if (s.getName().equals(name)) {
+                intent.putExtra("station",s);
+            }
+        }
         startActivity(intent);
     }
 }

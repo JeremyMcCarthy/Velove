@@ -65,7 +65,7 @@ public class BikeListFragment extends Fragment {
                         Station s = stationAdapter.getStation(position);
                         // 2 - Show result in a Toast
                         Toast.makeText(getContext(), "You clicked on user : "+s.getName(), Toast.LENGTH_SHORT).show();
-                        activity.callDetailsActivity();
+                        activity.callDetailsActivity(s.getName());
                     }
                 });
     }
@@ -88,6 +88,6 @@ public class BikeListFragment extends Fragment {
     }
 
     public interface MainActivityBikeListCallBack {
-        void callDetailsActivity();
+        void callDetailsActivity(String name);
     }
 }
