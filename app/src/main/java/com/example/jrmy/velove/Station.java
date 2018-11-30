@@ -2,6 +2,7 @@ package com.example.jrmy.velove;
 
 import java.io.Serializable;
 
+// Class Station with all the properties we can get from the database
 public class Station implements Serializable {
     private int ID;
 

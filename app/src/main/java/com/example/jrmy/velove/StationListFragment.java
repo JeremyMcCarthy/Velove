@@ -8,12 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
-public class BikeListFragment extends Fragment {
+public class StationListFragment extends Fragment {
 
     private MainActivity activity;
     private ArrayList<Station> stations = new ArrayList<>();
@@ -23,8 +22,6 @@ public class BikeListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -32,6 +29,7 @@ public class BikeListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_bike_list, container, false);
+
         rcvStation = rootView.findViewById(R.id.rcvStations);
         rcvStation.setHasFixedSize(true);
 
@@ -42,31 +40,27 @@ public class BikeListFragment extends Fragment {
         stationAdapter = new StationAdapter(this.getContext(),stations);
         rcvStation.setAdapter(stationAdapter);
 
-        // 2 - Calling the method that configuring click on RecyclerView
+        // Configure the click on Recyclerview
         this.configureOnClickRecyclerView();
-
-
 
         return rootView;
     }
 
+    //
     public void dataReception(ArrayList<Station> s){
         stations.addAll(s);
         stationAdapter.notifyDataSetChanged();
     }
 
-    // 1 - Configure item click on RecyclerView
+    // Configure item click on RecyclerView
     private void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(rcvStation, R.layout.fragment_bike_list)
-                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        // 1 - Get Station from adapter
-                        Station s = stationAdapter.getStation(position);
-                        // 2 - Show result in a Toast
-                        Toast.makeText(getContext(), "You clicked on user : "+s.getName(), Toast.LENGTH_SHORT).show();
-                        activity.callDetailsActivity(s.getName());
-                    }
+                .setOnItemClickListener((recyclerView, position, v) -> {
+                    // Get Station from adapter
+                    Station s = stationAdapter.getStation(position);
+
+                    // Launch the new activity with the details of the selected Station
+                    activity.callDetailsActivity(s.getName());
                 });
     }
 
@@ -77,7 +71,7 @@ public class BikeListFragment extends Fragment {
             activity = (MainActivity) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " ");
         }
     }
 

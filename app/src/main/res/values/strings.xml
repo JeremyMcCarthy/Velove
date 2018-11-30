@@ -6,4 +6,11 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_refresh">Refresh</string>
+    <string name="dataSource"><![CDATA[https://download.data.grandlyon.com/wfs/rdata?SERVICE=WFS&VERSION=2.0.0&outputformat=GEOJSON&maxfeatures=30&request=GetFeature&typename=jcd_jcdecaux.jcdvelov&SRSNAME=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4171&fbclid=IwAR2HOWbzszp9KHnj4KVokkGdclI2vzBwy5TEhfnCWrBiTKta4EQwrQrdhXs]]></string>
+    <string name="donnee_disponibles">Les données utilisées par cette application sont disponibles à cette adresse :</string>
+    <string name="text_donnees">Les données récupérées sont au format Json et correspondent aux différentes propriétés des stations (Identifiant, Nom, Localisation...).</string>
+    <string name="address_github">https://github.com/JeremyMcCarthy/Velove</string>
+    <string name="asking_participation">Si vous souhaitez nous aider dans le développement et l\'amélioration de cette application, les sources sont disponibles à cette adresse :</string>
+    <string name="application_goal">Permettre aux gens de connaitre tous les emplacements des stations vélo\'v dans lyon. Elle permet également de voir le nombre de vélos disponibles ainsi que le nombres de places libre pour ranger son vélo.</string>
+    <string name="application_goal_title">But de l\'application :</string>
 </resources>
