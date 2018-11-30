@@ -44,6 +44,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     //Méthode gérant la réception des données des markers
     public void dataReception(ArrayList<Position> p){
+        positions.removeAll(positions);
         positions.addAll(p);
         for(Position pp : positions) {
             gMap.addMarker(new MarkerOptions().position(pp.getLatLng()).title(pp.getName()));
