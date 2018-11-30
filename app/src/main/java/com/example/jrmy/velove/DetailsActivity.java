@@ -21,6 +21,6 @@ public class DetailsActivity extends AppCompatActivity {
         TextView tvAvailableBikeStands = findViewById(R.id.availableBikeStands);
         tvAvailableBikeStands.setText(""+station.getAvailableBikeStands());
         TextView tvLastUpdate = findViewById(R.id.lastUpdate);
-        tvLastUpdate.setText(""+station.getAvailableBikeStands());
+        tvLastUpdate.setText(station.getLastUpdate());
     }
 }

@@ -41,6 +41,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapView=rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        if(savedInstanceState!=null) {
+            positions = (ArrayList<Position>) savedInstanceState.getSerializable("positions");
+        }
         Log.d("MAP","yesyes");
         return rootView;
     }
@@ -99,5 +102,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public interface MainActivityMapsCallBack {
         void callDataReception();
         void callDetailsActivity(String name);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelableArrayList("positions",positions);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

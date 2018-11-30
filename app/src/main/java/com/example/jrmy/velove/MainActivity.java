@@ -1,5 +1,6 @@
 package com.example.jrmy.velove;
 
+import android.app.Application;
 import android.content.Intent;
 import android.icu.util.LocaleData;
 import android.os.Bundle;
