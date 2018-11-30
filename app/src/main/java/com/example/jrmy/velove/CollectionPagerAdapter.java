@@ -14,11 +14,11 @@ public class CollectionPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
-    private BikeListFragment stationFragment;
+    private StationListFragment stationFragment;
     private MapsFragment mapsFragment;
 
     //pour pouvoir récupérer les fragments depuis la MainActivity
-    public BikeListFragment getStationFragment() {
+    public StationListFragment getStationFragment() {
         return stationFragment;
     }
     public MapsFragment getMapsFragment() {
@@ -36,14 +36,11 @@ public class CollectionPagerAdapter extends FragmentPagerAdapter {
                 fragment = mapsFragment;
                 break ;
             case 0 :
-                stationFragment = new BikeListFragment();
+                stationFragment = new StationListFragment();
                 fragment = stationFragment;
                 break ;
             default :
                 fragment = new PagerFragment();
-                args = new Bundle();
-                args.putInt(PagerFragment.ARG_OBJECT, i + 1);
-                fragment.setArguments(args);
                 break;
         }
         return fragment;
@@ -67,7 +64,7 @@ public class CollectionPagerAdapter extends FragmentPagerAdapter {
                 title = "Liste";
                 break;
             default :
-                title = "Unkonwn";
+                title = "Infos";
                 break;
         }
         return title;
