@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+//Fragment d'affichage de la carte avec les markers des stations
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private MainActivity activity;
     private MapView mapView;
@@ -29,20 +30,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // The last two arguments ensure LayoutParams are inflated
-        // properly.
         View rootView = inflater.inflate(
                 R.layout.fragment_maps, container, false);
         mapView=rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        //Récupération des positions d'une instance précédente si jamais le fragment a été détruit
         if(savedInstanceState!=null) {
             positions = (ArrayList<Position>) savedInstanceState.getSerializable("positions");
         }
-        Log.d("MAP","yesyes");
+
         return rootView;
     }
 
+    //Méthode gérant la réception des données des markers
     public void dataReception(ArrayList<Position> p){
         positions.addAll(p);
         for(Position pp : positions) {
@@ -52,27 +54,29 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("DATA","map recue");
         gMap = googleMap;
+
+        //la carte est prête, on appelle la méthode de callback afin de récupérer les données
         activity.callDataReception();
+
+        //Permet de fixer des limites à la caméra de la carte dans la zone géographique de Lyon
         lyon = new LatLngBounds(
                 new LatLng(45.714131, 4.784641), new LatLng(45.800052, 4.910138));
         gMap.setLatLngBoundsForCameraTarget(lyon);
+
+        //Zoom et centrage sur la zone de Lyon
         gMap.setMinZoomPreference(11);
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lyon.getCenter(), 12));
-        gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),15));
-                return false;
-            }
+
+        //Ajout d'un déplacement de caméra et d'un zoom lors d'un clic sur un marker
+        gMap.setOnMarkerClickListener(marker -> {
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),15));
+            return false;
         });
-        gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                activity.callDetailsActivity(marker.getTitle());
-            }
-        });
+
+        //Appel à l'activité DetailsActivity lors d'un clic sur la bulle d'info du marker
+        gMap.setOnInfoWindowClickListener(marker -> activity.callDetailsActivity(marker.getTitle()));
+
         mapView.onResume();
     }
 
@@ -98,6 +102,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         void callDetailsActivity(String name);
     }
 
+    //sécurisation des données lorsque le fragment est détruit
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelableArrayList("positions",positions);

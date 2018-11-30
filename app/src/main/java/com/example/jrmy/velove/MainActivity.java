@@ -48,18 +48,15 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         service = retrofit.create(InterfaceRequete.class);
 
         getStationsFromServer();
-        // ViewPager and its adapters use support library
-        // fragments, so use getSupportFragmentManager.
 
+        //Adapter pour la gestion des onglets et la gestion des swipes entre les différents fragments
         mCollectionPagerAdapter =
                 new CollectionPagerAdapter(
                         getSupportFragmentManager());
-
-        //mTextView.setText(stations.get(0).toString());
+        //Association de l'Adapter au ViewPager
         mViewPager = findViewById(R.id.pager);
         mViewPager.setAdapter(mCollectionPagerAdapter);
-
-
+        //Mise en place de la barre d'onglets
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(mViewPager);
 
@@ -140,18 +137,24 @@ public class MainActivity extends AppCompatActivity implements MapsFragment.Main
         }
     }
 
+    //Méthode de callback de l'interface du fragment de la carte MapsFragment
+    //permet de passer les données nécessaires aux markers
+    //on utilise l'objet Position afin de ne passer que les informations nécessaires pour chaque station
     @Override
     public void callDataReception() {
         mapsFragment = mCollectionPagerAdapter.getMapsFragment();
-        Log.d("DATA","deb remp positions");
         for(Station s : stations) {
-            Log.d("DATA",s.getName());
             positions.add(new Position(new LatLng(s.getLatitude(),s.getLongitude()),s.getName()));
         }
-        Log.d("DATA","fin remp positions");
+        //appel de la méthode de MapsFragment gérant les données des markers
         mapsFragment.dataReception(positions);
     }
 
+    //Méthode de callback de l'interface du fragment de la carte MapsFragment ET de liste BikeListFragment
+    //permet quand on clique respectivement sur la bulle d'info d'un marker pour MapsFragment
+    //et quand on clique sur un item de la liste pour BikeListFragment
+    //de lancer l'activité DetailsActivity qui affiche des détails pour une station
+    //on passe donc les informations de la station via l'intent
     @Override
     public void callDetailsActivity(String name) {
         Intent intent = new Intent(this, DetailsActivity.class);

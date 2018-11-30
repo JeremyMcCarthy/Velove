@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+//Activité permettant d'afficher les détails pour une station
 public class DetailsActivity extends AppCompatActivity {
 
     @Override
@@ -27,11 +28,10 @@ public class DetailsActivity extends AppCompatActivity {
         TextView tvLastUpdate = findViewById(R.id.lastUpdate);
         tvLastUpdate.setText(station.getLastUpdate());
 
-        //limite de une requête par jour ...
+        //Utilisation de Picasso et de l'API Google Static Street View pour obtenir un visuel de la station
+        //limite de une requête par jour car clé gratuite ne fonctionne donc pas tout le temps ...
         ImageView imageView =findViewById(R.id.imageView3);
-        Log.d("STREET","entering");
         String url = "https://maps.googleapis.com/maps/api/streetview?size=400x400&location="+station.getLatitude()+","+station.getLongitude()+"&fov=90&heading=235&key=AIzaSyDrtYUze0KhgopDcNrjR4OiNTeAm9kAoMo";
         Picasso.with(getApplicationContext()).load(url).into(imageView);
-        Log.d("STREET","exiting");
     }
 }

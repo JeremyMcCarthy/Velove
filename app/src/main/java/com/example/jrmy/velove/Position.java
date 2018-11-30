@@ -7,6 +7,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 
+//Classe permettant de gérer les informations nécessaires pour le fragment MapsFragment
+//Serializable pour les ArrayList
+//Parcelable pour le savedInstance
 public class Position implements Serializable, Parcelable {
     private LatLng latLng;
     private String name;
